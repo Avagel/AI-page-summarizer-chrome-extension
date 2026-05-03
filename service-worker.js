@@ -6,7 +6,6 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       const summary = await handleWithCache(message.text, message.url);
       sendResponse({ result: summary });
     } catch (error) {
-      console.log("Error in summarization:", error);
       sendResponse({ error: "Error occurred while summarizing the text." });
     }
   }
@@ -16,7 +15,6 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 async function handleWithCache(text, url) {
   const cached = await getFromCache(url);
   if (cached) {
-    console.log("Cache hit for URL:", url);
     return cached;
   }
 
@@ -83,7 +81,6 @@ async function handleSummarization(text) {
   }
 
   const data = await response.json();
-  console.log("API response:", data);
 
   return data.candidates[0].content.parts[0].text;
 }
