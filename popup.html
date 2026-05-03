@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PageLens</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <button id="theme-toggle">🌙</button>
+    <div id="app">
+      <header>
+        <h2>PageLens</h2>
+      </header>
+      <p id="page-title">No page loaded</p>
+
+      <main>
+        <div id="loading" class="hidden">
+          <span class="spinner"></span>
+          <!-- <p>Analyzing page...</p> -->
+        </div>
+
+        <div id="result" class="hidden">
+          <div id="summary-output"></div>
+        </div>
+
+        <div id="error" class="hidden">
+          <p id="error-message"></p>
+        </div>
+        <div class="button-group">
+          <button id="clear-btn" disabled>Clear</button>
+          <button id="summarize-btn">Summarize Page</button>
+          <button id="copy-btn" class="hidden" disabled>Copy</button>
+        </div>
+      </main>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
