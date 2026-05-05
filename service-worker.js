@@ -104,7 +104,7 @@ async function handleSummarization(text) {
   Page content:
   ${text}
   `;
-  const response = await fetch("http://localhost:5000/api/prompt", {
+  const response = await fetch("summarrizer-backend.vercel.app/api/prompt", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
