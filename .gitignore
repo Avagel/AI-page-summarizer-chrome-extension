@@ -1,2 +1,37 @@
-config.js
+# Dependencies
 node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Build outputs
+dist/
+build/
+
+# Coverage reports
+coverage/
+
+# Chrome extension / build artifacts (if any)
+*.crx
+*.pem
+
+# Temporary files
+tmp/
+temp/

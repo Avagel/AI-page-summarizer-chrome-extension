@@ -6,6 +6,7 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       const summary = await handleWithCache(message.text, message.url);
       sendResponse({ result: summary });
     } catch (error) {
+      console.log(error);
       sendResponse({ error: "Error occurred while summarizing the text." });
     }
   }
@@ -41,48 +42,86 @@ async function saveToCache(url, summary) {
   });
 }
 
+// async function handleSummarization(text) {
+//   const prompt = `
+//     You are a helpful assistant. Summarize the following webpage content.
+//     Return your response in this exact HTML format:
+//     <h3>Summary</h3>
+//     <ul>
+//       <li>bullet point 1</li>
+//     </ul>
+//     <h3>Key Insights</h3>
+//     <ul>
+//       <li>insight 1</li>
+//     </ul>
+//     <p><strong>Estimated Reading Time:</strong> X minutes</p>
+
+//     Page content:
+//     ${text}
+//   `;
+
+//   const response = await fetch(
+//     `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEY}`,
+//     {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         contents: [
+//           {
+//             parts: [{ text: prompt }],
+//           },
+//         ],
+//       }),
+//     },
+//   );
+
+//   if (!response.ok) {
+//     throw new Error(`API error: ${response.status}`);
+//   }
+
+//   const data = await response.json();
+
+//   return data.candidates[0].content.parts[0].text;
+// }
+
 async function handleSummarization(text) {
+  console.log("fetching");
   const prompt = `
-    You are a helpful assistant. Summarize the following webpage content.
-    Return your response in this exact HTML format:
-    <h3>Summary</h3>
-    <ul>
-      <li>bullet point 1</li>
-    </ul>
-    <h3>Key Insights</h3>
-    <ul>
-      <li>insight 1</li>
-    </ul>
-    <p><strong>Estimated Reading Time:</strong> X minutes</p>
-
-    Page content:
-    ${text}
+  You are a helpful assistant. Summarize the following webpage content.
+  Return your response in this exact HTML format:
+  <h3>Summary</h3>
+  <ul>
+  <li>bullet point 1</li>
+  </ul>
+  <h3>Key Insights</h3>
+  <ul>
+  <li>insight 1</li>
+  </ul>
+  <p><strong>Estimated Reading Time:</strong> X minutes</p>
+  
+  Page content:
+  ${text}
   `;
-
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEY}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [{ text: prompt }],
-          },
-        ],
-      }),
+  const response = await fetch("http://localhost:5000/api/prompt", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify({ prompt }),
+  });
 
   if (!response.ok) {
-    throw new Error(`API error: ${response.status}`);
+    const errText = await response.text();
+    throw new Error(errText);
   }
 
-  const data = await response.json();
-
-  return data.candidates[0].content.parts[0].text;
+  console.log(response);
+  const result = await response.json();
+  console.log(result);
+  return result;
+  // return data.candidates[0].content.parts[0].text;
 }
 
 // model: "gemini-3-flash-preview",
